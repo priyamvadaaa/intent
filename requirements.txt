@@ -1,0 +1,6 @@
+flask
+flask-restful
+torch
+transformers
+langchain
+sentence-transformers
