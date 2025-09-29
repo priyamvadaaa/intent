@@ -9,6 +9,7 @@ from langchain.chains import RetrievalQA
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_postgres import PGVector
+from langchain_core.output_parsers import StrOutputParser
 import time
 from langchain_core.runnables import RunnableLambda
 
@@ -38,7 +39,7 @@ if not os.environ.get("GOOGLE_API_KEY"):
 
 def ans_llm(query):
     start_time_llm = time.perf_counter()
-    llm=ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+    llm=ChatGoogleGenerativeAI(model="gemini-2.5-flash",streaming=True)
     prompt=ChatPromptTemplate.from_template("""You are a helpful assistant, answer the user queries based on the context provided,
     if you can't find the context try to answer as factually as you can: 
     Question: {question}
@@ -55,6 +56,8 @@ def ans_llm(query):
     out=qa_chain.invoke({"query":query})
     end_time_llm = time.perf_counter()
     tot_llm=end_time_llm-start_time_llm
+    print(f"Answer from llm is{out} and by llm is {tot_llm:.3f}")
     return f"Answer from llm is{out} and by llm is {tot_llm:.3f}"
 
 # ans_llm("how many gm in 1 kg")
+ans_llm("what did the president say based on document")

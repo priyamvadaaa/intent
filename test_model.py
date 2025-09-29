@@ -1,4 +1,20 @@
 # Use a pipeline as a high-level helper
+# Use a pipeline as a high-level helper
+# Use a pipeline as a high-level helper
+from sympy.physics.units import temperature
+# Use a pipeline as a high-level helper
+from transformers import pipeline
+
+pipe = pipeline("text-generation", model="HuggingFaceTB/SmolLM2-1.7B",temperature=0.9)
+message="what is the rotational speed of earth"
+out=pipe(message)
+print(out)
+
+'''LLAMA (check if access is granted)
+from transformers import pipeline
+
+pipe = pipeline("text-generation", model="meta-llama/Llama-3.2-1B")'''
+''' QWEN
 from transformers import pipeline
 from langchain_huggingface import HuggingFacePipeline
 from langchain_core.prompts import ChatPromptTemplate
@@ -17,7 +33,7 @@ chain= prompt | hf
 query="How many hours are in a week"
 out = chain.invoke({"question": query})
 print(out.split("Answer:\n")[-1])
-
+'''
 
 '''GEMMA
 from sympy.polys.polyconfig import query

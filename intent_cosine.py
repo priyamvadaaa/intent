@@ -47,8 +47,10 @@ def detect_intent_pg(query,threshold=0.65):
     #excat string match
     for phrase in trigger_phrase:
         if phrase in query_lower:
+            end_time_cosine = time.perf_counter()
             # print(f"Exact phrase found in query{phrase}")
-            return "rag"
+            tot_cosine =end_time_cosine - start_time_cosine
+            return "rag", tot_cosine
 
     # embedding match
     query_emb=embeddings.embed_query(query)
@@ -66,15 +68,16 @@ def detect_intent_pg(query,threshold=0.65):
             best_sim=similarity
             best_phrase=doc.page_content
 
-    end_time_cosine = time.perf_counter()
-    tot_cos=end_time_cosine-start_time_cosine
+    end_time_cosine2 = time.perf_counter()
+
     if best_sim>=threshold:
         # print(f"emb match found with {best_phrase} (similarity={best_sim:.3f})")
-        return "rag"
+        tot_cosine=end_time_cosine2 - start_time_cosine
+        return "rag", tot_cosine
 
     # print(f"No trigger phrase detected for query: '{query}'")
-    return "slm"
-
+    tot_cosine=end_time_cosine2 - start_time_cosine
+    return "slm", tot_cosine
 #
 # queries = [
 #         "Tell me about blackholes",
@@ -86,5 +89,3 @@ def detect_intent_pg(query,threshold=0.65):
 # for q in queries:
 #     intent = detect_intent_pg(q)
 #     print(f"Query: '{q}' → Detected intent: {intent}")
-
-

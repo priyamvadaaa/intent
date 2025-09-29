@@ -16,9 +16,12 @@ class Intent(Resource):
         query=data.get("query","")
         if not query:
             return {"error":"No query"},400
+        start_time_main = time.perf_counter()
 
         result=detect_model(query)
-        return {"query":query, "response":result},200
+        end_time_main = time.perf_counter()
+        tot_main= round((end_time_main - start_time_main), 3)
+        return {"query":query, "response":result, "time by api":tot_main},200
 
 
 
