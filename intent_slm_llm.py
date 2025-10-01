@@ -24,4 +24,5 @@ def detect_model(query):
 
 # detect_model("What did the president say about economy")
 # detect_model("Who are the members of the European")
+# detect_model("what is a slm?")
 

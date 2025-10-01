@@ -1,15 +1,25 @@
-# Use a pipeline as a high-level helper
-# Use a pipeline as a high-level helper
-# Use a pipeline as a high-level helper
-from sympy.physics.units import temperature
-# Use a pipeline as a high-level helper
+import time
 from transformers import pipeline
+from langchain_huggingface import HuggingFacePipeline
+from langchain_core.prompts import ChatPromptTemplate
+from langchain.chains import LLMChain
 
-pipe = pipeline("text-generation", model="HuggingFaceTB/SmolLM2-1.7B",temperature=0.9)
-message="what is the rotational speed of earth"
-out=pipe(message)
+start=time.perf_counter()
+
+pipe=pipeline("text-generation", model="HuggingFaceTB/SmolLM2-135M")
+hf=HuggingFacePipeline(pipeline=pipe)
+prompt = ChatPromptTemplate.from_template("""
+You are a precise Q&A assistant. Only give factual, concise answers.If you are unsure about answers just say "I don't know".
+Question: {question}
+Answer:
+""")
+question = "Tell me about blackholes"
+chain = prompt | hf
+
+out = chain.invoke({"question": question})
 print(out)
-
+end=time.perf_counter()
+print(end-start)
 '''LLAMA (check if access is granted)
 from transformers import pipeline
 
